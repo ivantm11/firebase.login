@@ -2,9 +2,13 @@ import { FC, useState } from 'react';
 import { TextField } from '@fluentui/react';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
 
+import { useAppDispatch } from 'store';
 import styles from './Register.module.scss';
+import { dummyAction } from 'store/app/actions';
 
 const Register: FC = () => {
+  const dispatch = useAppDispatch();
+
   const [userMail, setUserMail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassword, setUserConfirmPassword] = useState('');
@@ -41,7 +45,10 @@ const Register: FC = () => {
   const confirmIsDisabled = () =>
     someFieldIsEmpty() || passwordsAreNotTheSame();
 
-  const createClicked = () => console.info('Create');
+  const createClicked = () => {
+    console.info('Create');
+    dispatch(dummyAction('lol'));
+  };
 
   return (
     <div className={styles.Register}>

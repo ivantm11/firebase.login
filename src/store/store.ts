@@ -1,8 +1,11 @@
+import createSagaMiddleware from '@redux-saga/core';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
+import sagas from './sagas';
 import appReducer from './app/appSlice';
 
-const middleware = [...getDefaultMiddleware({ thunk: false })];
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware];
 
 const store = configureStore({
   reducer: {
@@ -10,6 +13,8 @@ const store = configureStore({
   },
   middleware
 });
+
+sagaMiddleware.run(sagas);
 
 type AppDispatch = typeof store.dispatch;
 type RootState = ReturnType<typeof store.getState>;
