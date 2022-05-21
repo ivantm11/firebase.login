@@ -2,26 +2,31 @@ import { FC, useState } from 'react';
 import { TextField } from '@fluentui/react';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
 
+import FloatingBox from 'common/components/FloatingBox';
+
 import styles from './Login.module.scss';
+import { LogInField } from 'common/model/inputs';
 
 const Login: FC = () => {
   const [userMail, setUserMail] = useState('');
   const [userPassword, setUserPassword] = useState('');
 
-  const updateUserMail = (
+  const updateUserInput = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newValue = ''
+    inputValue = ''
   ) => {
     event.preventDefault();
-    setUserMail(newValue);
-  };
-
-  const updateUserPassword = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newValue = ''
-  ) => {
-    event.preventDefault();
-    setUserPassword(newValue);
+    const inputName =
+      event.currentTarget.name.toUpperCase() as keyof typeof LogInField;
+    const inputField: LogInField = LogInField[inputName] || LogInField.NONE;
+    switch (inputField) {
+      case LogInField.EMAIL:
+        setUserMail(inputValue);
+        break;
+      case LogInField.PASSWORD:
+        setUserPassword(inputValue);
+        break;
+    }
   };
 
   const someFieldIsEmpty = () => userMail === '' || userPassword === '';
@@ -29,38 +34,40 @@ const Login: FC = () => {
   const logInClicked = () => console.info('Log In');
 
   return (
-    <div className={styles.Login}>
-      <div className={styles.container}>
-        <h2 className={styles.title}>{`Log In`}</h2>
+    <FloatingBox className={styles.Login}>
+      <h2 className={styles.title}>{`Register`}</h2>
+      <form className={styles.userData}>
         <TextField
           label="Email"
           type="email"
+          name={LogInField.EMAIL}
           value={userMail}
-          onChange={updateUserMail}
+          onChange={updateUserInput}
           required
         />
         <TextField
           label="Password"
           value={userPassword}
-          onChange={updateUserPassword}
+          onChange={updateUserInput}
           type="password"
+          name={LogInField.PASSWORD}
           canRevealPassword
           revealPasswordAriaLabel="Show password"
           required
         />
-        <PrimaryButton
-          text="Log In"
-          onClick={logInClicked}
-          disabled={someFieldIsEmpty()}
-          className={styles.Go}
-        />
-        <p className={styles.message}>
-          {`If you don't have an account, `}
-          <br />
-          <a href="/register"> {`you can create one here.`}</a>
-        </p>
-      </div>
-    </div>
+      </form>
+      <PrimaryButton
+        text="Log In"
+        onClick={logInClicked}
+        disabled={someFieldIsEmpty()}
+        className={styles.btn}
+      />
+      <p className={styles.message}>
+        {`If you don't have an account, `}
+        <br />
+        <a href="/register"> {`you can create one here.`}</a>
+      </p>
+    </FloatingBox>
   );
 };
 

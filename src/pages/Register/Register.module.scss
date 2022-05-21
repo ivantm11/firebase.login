@@ -1,37 +1,35 @@
 .Register {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  flex-direction: column;
-  justify-content: center;
+  max-width: 40vw;
+  background-color: rgb(90, 175, 255);
+  border: 0.1rem solid white;
+  padding: 1rem 0.7rem;
+  display: grid;
+  gap: 0.5rem;
 
-  .container {
-    min-width: 50vw;
-    max-width: 60vw;
-    background-color: rgb(90, 175, 255);
-    border: 0.1rem solid white;
-    padding: 1rem 0.7rem;
+  .title {
+    margin: 0;
+    text-align: center;
+  }
+
+  .userData {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.3rem;
+    margin-bottom: 0.7rem;
+  }
 
-    .title {
-      margin: 0;
-      text-align: center;
-    }
+  .btn {
+    min-height: 2rem;
+    min-width: 40vw;
+    justify-self: center;
+  }
 
-    .Go {
-      margin-top: 0.5rem;
-      min-height: 2rem;
-    }
+  .message {
+    margin: 0;
+    margin-top: 0.5rem;
+    text-align: center;
 
-    .message {
-      margin: 0;
-      text-align: center;
-
-      a {
-        text-decoration: none;
-      }
+    a {
+      text-decoration: none;
     }
   }
 }
