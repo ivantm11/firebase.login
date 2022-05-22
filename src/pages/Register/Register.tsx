@@ -1,21 +1,31 @@
-import { FC, useState } from 'react';
-import { TextField } from '@fluentui/react';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
+import { Spinner, SpinnerSize, TextField } from '@fluentui/react';
 
-import { useAppDispatch } from 'store';
-import { dummyAction } from 'store/app/actions';
+import { MAIN_PATH } from 'routes/paths';
 import { RegisterField } from 'common/model/inputs';
+import { useAppDispatch, useAppSelector } from 'store';
 
 import FloatingBox from 'common/components/FloatingBox';
 
 import styles from './Register.module.scss';
+import { createUserWithEmail } from 'store/app/actions';
 
 const Register: FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isLoadingRequest = useAppSelector(state => state.app.loadingRequest);
+  const isUserLoggedIn = useAppSelector(state => state.app.user.loggedIn);
 
   const [userMail, setUserMail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassword, setUserConfirmPassword] = useState('');
+
+  useEffect(() => {
+    if (isUserLoggedIn) navigate(MAIN_PATH);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUserLoggedIn]);
 
   const updateUserInput = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -47,47 +57,50 @@ const Register: FC = () => {
   const confirmIsDisabled = () =>
     someFieldIsEmpty() || passwordsAreNotTheSame();
 
-  const createClicked = () => {
-    console.info('Create');
-    dispatch(dummyAction('lol'));
+  const handleRegister = () => {
+    dispatch(createUserWithEmail({ email: userMail, password: userPassword }));
   };
 
   return (
     <FloatingBox className={styles.Register}>
       <h2 className={styles.title}>{`Register`}</h2>
-      <form className={styles.userData}>
-        <TextField
-          label="Email"
-          type="email"
-          name={RegisterField.EMAIL}
-          value={userMail}
-          onChange={updateUserInput}
-          required
-        />
-        <TextField
-          label="Password"
-          value={userPassword}
-          onChange={updateUserInput}
-          type="password"
-          name={RegisterField.PASSWORD}
-          canRevealPassword
-          revealPasswordAriaLabel="Show password"
-          required
-        />
-        <TextField
-          label="Confirm password"
-          value={userConfirmPassword}
-          onChange={updateUserInput}
-          type="password"
-          name={RegisterField.CONFIRM_PASSWORD}
-          canRevealPassword
-          revealPasswordAriaLabel="Show password"
-          required
-        />
-      </form>
+      {isLoadingRequest ? (
+        <Spinner size={SpinnerSize.large} label="Creating user" />
+      ) : (
+        <form className={styles.userData}>
+          <TextField
+            label="Email"
+            type="email"
+            name={RegisterField.EMAIL}
+            value={userMail}
+            onChange={updateUserInput}
+            required
+          />
+          <TextField
+            label="Password"
+            value={userPassword}
+            onChange={updateUserInput}
+            type="password"
+            name={RegisterField.PASSWORD}
+            canRevealPassword
+            revealPasswordAriaLabel="Show password"
+            required
+          />
+          <TextField
+            label="Confirm password"
+            value={userConfirmPassword}
+            onChange={updateUserInput}
+            type="password"
+            name={RegisterField.CONFIRM_PASSWORD}
+            canRevealPassword
+            revealPasswordAriaLabel="Show password"
+            required
+          />
+        </form>
+      )}
       <PrimaryButton
         text="Create account"
-        onClick={createClicked}
+        onClick={handleRegister}
         disabled={confirmIsDisabled()}
         className={styles.btn}
       />

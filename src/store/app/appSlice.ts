@@ -1,19 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import initialState, { AppState } from './state';
+import { UserData } from 'common/model/user';
+import initialState, { AppState, emptyUser } from './state';
 
 export const appSlice = createSlice({
   name: 'App',
   initialState,
   reducers: {
-    increment: (state: AppState) => {
-      state.value += 1;
+    resetUser: (state: AppState) => {
+      state.user = emptyUser;
     },
-    decrement: (state: AppState) => {
-      state.value -= 1;
+    saveNewUserCreated: (state: AppState, action: PayloadAction<UserData>) => {
+      const newUser = action.payload;
+      state.user = {
+        ...newUser,
+        loggedIn: true
+      };
     },
-    incrementByAmount: (state: AppState, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    updateLoadingStatus: (state: AppState, action: PayloadAction<boolean>) => {
+      state.loadingRequest = action.payload;
     }
   }
 });

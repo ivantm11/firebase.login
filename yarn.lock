@@ -7955,6 +7955,11 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
 
+react-notifications-component@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-notifications-component/-/react-notifications-component-4.0.0.tgz#f12eac9856b08db25075db65a907b7fa49c5faad"
+  integrity sha512-wh2iETJNcSb8ctujPgUnGjYEj8dR+XrtX1l1C5Z8Zpbq+d9aNVCxrBLqx8FgQYxZj8m2cHJiWerMAnOA7P2ENA==
+
 react-redux@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.1.tgz#2bc029f5ada9b443107914c373a2750f6bc0f40c"

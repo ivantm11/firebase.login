@@ -2,6 +2,6 @@ import { getAnalytics } from 'firebase/analytics';
 
 import firebase from './firebase';
 
-const analytics = getAnalytics(firebase);
+const MyAnalytics = getAnalytics(firebase);
 
-export default analytics;
+export default MyAnalytics;
