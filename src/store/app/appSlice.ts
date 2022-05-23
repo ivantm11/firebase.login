@@ -10,7 +10,10 @@ export const appSlice = createSlice({
     resetUser: (state: AppState) => {
       state.user = emptyUser;
     },
-    saveNewUserCreated: (state: AppState, action: PayloadAction<UserData>) => {
+    updateCurrentLocalUser: (
+      state: AppState,
+      action: PayloadAction<UserData>
+    ) => {
       const newUser = action.payload;
       state.user = {
         ...newUser,

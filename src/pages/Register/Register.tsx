@@ -6,17 +6,18 @@ import { Spinner, SpinnerSize, TextField } from '@fluentui/react';
 import { MAIN_PATH } from 'routes/paths';
 import { RegisterField } from 'common/model/inputs';
 import { useAppDispatch, useAppSelector } from 'store';
+import { createUserWithEmail } from 'store/app/actions';
 
 import FloatingBox from 'common/components/FloatingBox';
 
 import styles from './Register.module.scss';
-import { createUserWithEmail } from 'store/app/actions';
 
 const Register: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isLoadingRequest = useAppSelector(state => state.app.loadingRequest);
+
   const isUserLoggedIn = useAppSelector(state => state.app.user.loggedIn);
+  const isLoadingRequest = useAppSelector(state => state.app.loadingRequest);
 
   const [userMail, setUserMail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -57,9 +58,8 @@ const Register: FC = () => {
   const confirmIsDisabled = () =>
     someFieldIsEmpty() || passwordsAreNotTheSame();
 
-  const handleRegister = () => {
+  const handleRegister = () =>
     dispatch(createUserWithEmail({ email: userMail, password: userPassword }));
-  };
 
   return (
     <FloatingBox className={styles.Register}>

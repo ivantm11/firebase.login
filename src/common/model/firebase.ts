@@ -1,4 +1,4 @@
-export interface INewUser {
+export interface IUserWithEmail {
   email: string;
   password: string;
 }

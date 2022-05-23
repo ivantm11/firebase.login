@@ -1,24 +1,41 @@
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
   UserCredential
 } from 'firebase/auth';
 
 import { MyAuth } from './firebase';
-import { INewUser } from 'common/model/firebase';
+import { IUserWithEmail } from 'common/model/firebase';
 
 class FirebaseService {
   static async createUserWithEmail({
     email,
     password
-  }: INewUser): Promise<UserCredential> {
+  }: IUserWithEmail): Promise<UserCredential> {
     try {
-      const userCredentials = await createUserWithEmailAndPassword(
+      const userCreated = await createUserWithEmailAndPassword(
         MyAuth,
         email,
         password
       );
-      return userCredentials;
+      return userCreated;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async logInUserWithEmail({
+    email,
+    password
+  }: IUserWithEmail): Promise<UserCredential> {
+    try {
+      const userLogged = await signInWithEmailAndPassword(
+        MyAuth,
+        email,
+        password
+      );
+      return userLogged;
     } catch (error) {
       throw error;
     }
