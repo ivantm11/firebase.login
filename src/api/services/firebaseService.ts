@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  UserCredential
+} from 'firebase/auth';
 
 import { MyAuth } from './firebase';
 import { INewUser } from 'common/model/firebase';
@@ -16,7 +20,14 @@ class FirebaseService {
       );
       return userCredentials;
     } catch (error) {
-      console.info(error);
+      throw error;
+    }
+  }
+
+  static async userSignOut(): Promise<void> {
+    try {
+      await signOut(MyAuth);
+    } catch (error) {
       throw error;
     }
   }

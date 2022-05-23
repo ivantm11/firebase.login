@@ -3,4 +3,4 @@ import SagaActions from './sagaActions';
 
 export const { resetUser, saveNewUserCreated, updateLoadingStatus } =
   AppReducerActions;
-export const { createUserWithEmail } = SagaActions;
+export const { createUserWithEmail, userSignOut } = SagaActions;
