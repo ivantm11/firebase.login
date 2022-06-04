@@ -1,12 +1,13 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   UserCredential
 } from 'firebase/auth';
 
-import { MyAuth } from './firebase';
 import { IUserWithEmail } from 'common/model/firebase';
+import { MyAuth, MyGoogleAuthProvider } from './firebase';
 
 class FirebaseService {
   static async createUserWithEmail({
@@ -35,6 +36,15 @@ class FirebaseService {
         email,
         password
       );
+      return userLogged;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async logInUserWithGoogle(): Promise<UserCredential> {
+    try {
+      const userLogged = await signInWithPopup(MyAuth, MyGoogleAuthProvider);
       return userLogged;
     } catch (error) {
       throw error;

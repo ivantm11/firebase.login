@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
-import { Spinner, SpinnerSize, TextField } from '@fluentui/react';
+import { Separator, Spinner, SpinnerSize, TextField } from '@fluentui/react';
 
 import { MAIN_PATH } from 'routes/paths';
 import { RegisterField } from 'common/model/inputs';
@@ -11,6 +11,7 @@ import { createUserWithEmail } from 'store/app/actions';
 import FloatingBox from 'common/components/FloatingBox';
 
 import styles from './Register.module.scss';
+import GoogleSignIn from 'common/components/GoogleSignIn';
 
 const Register: FC = () => {
   const navigate = useNavigate();
@@ -67,43 +68,48 @@ const Register: FC = () => {
       {isLoadingRequest ? (
         <Spinner size={SpinnerSize.large} label="Creating user" />
       ) : (
-        <form className={styles.userData}>
-          <TextField
-            label="Email"
-            type="email"
-            name={RegisterField.EMAIL}
-            value={userMail}
-            onChange={updateUserInput}
-            required
+        <>
+          <form className={styles.userData}>
+            <TextField
+              label="Email"
+              type="email"
+              name={RegisterField.EMAIL}
+              value={userMail}
+              onChange={updateUserInput}
+              required
+            />
+            <TextField
+              label="Password"
+              value={userPassword}
+              onChange={updateUserInput}
+              type="password"
+              name={RegisterField.PASSWORD}
+              canRevealPassword
+              revealPasswordAriaLabel="Show password"
+              required
+            />
+            <TextField
+              label="Confirm password"
+              value={userConfirmPassword}
+              onChange={updateUserInput}
+              type="password"
+              name={RegisterField.CONFIRM_PASSWORD}
+              canRevealPassword
+              revealPasswordAriaLabel="Show password"
+              required
+            />
+          </form>
+          <PrimaryButton
+            text="Create account"
+            onClick={handleRegister}
+            disabled={confirmIsDisabled()}
+            className={styles.btn}
           />
-          <TextField
-            label="Password"
-            value={userPassword}
-            onChange={updateUserInput}
-            type="password"
-            name={RegisterField.PASSWORD}
-            canRevealPassword
-            revealPasswordAriaLabel="Show password"
-            required
-          />
-          <TextField
-            label="Confirm password"
-            value={userConfirmPassword}
-            onChange={updateUserInput}
-            type="password"
-            name={RegisterField.CONFIRM_PASSWORD}
-            canRevealPassword
-            revealPasswordAriaLabel="Show password"
-            required
-          />
-        </form>
+          <p className={styles.message}>{`or`}</p>
+        </>
       )}
-      <PrimaryButton
-        text="Create account"
-        onClick={handleRegister}
-        disabled={confirmIsDisabled()}
-        className={styles.btn}
-      />
+      <GoogleSignIn />
+      <Separator />
       <p className={styles.message}>
         {`Already have an account?`}
         <br />

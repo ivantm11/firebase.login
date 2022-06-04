@@ -7,6 +7,7 @@ import addUserNotification from 'utils/userNotifications';
 import {
   CREATE_USER_WITH_EMAIL,
   LOG_IN_USER_WITH_EMAIL,
+  LOG_IN_USER_WITH_GOOGLE,
   USER_SIGN_OUT
 } from './sagaActions';
 import { updateLoadingStatus } from './actions';
@@ -52,6 +53,21 @@ function* logInUserWithEmail(action: {
   }
 }
 
+function* logInUserWithGoogle(action: { type: string }) {
+  yield put(updateLoadingStatus(true));
+  try {
+    yield call(FirebaseService.logInUserWithGoogle);
+  } catch (error: any) {
+    addUserNotification({
+      title: 'Error at log in',
+      message: `${error.message}`,
+      type: 'danger'
+    });
+  } finally {
+    yield put(updateLoadingStatus(false));
+  }
+}
+
 function* userSignOut(action: { type: string }) {
   yield put(updateLoadingStatus(true));
   try {
@@ -70,6 +86,7 @@ function* userSignOut(action: { type: string }) {
 function* AppSaga() {
   yield takeLatest(CREATE_USER_WITH_EMAIL, createUserWithEmail);
   yield takeLatest(LOG_IN_USER_WITH_EMAIL, logInUserWithEmail);
+  yield takeLatest(LOG_IN_USER_WITH_GOOGLE, logInUserWithGoogle);
   yield takeLatest(USER_SIGN_OUT, userSignOut);
 }
 

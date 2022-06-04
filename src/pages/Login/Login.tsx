@@ -1,16 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PrimaryButton } from '@fluentui/react/lib/Button';
-import { Spinner, SpinnerSize, TextField } from '@fluentui/react';
+import { Separator, Spinner, SpinnerSize, TextField } from '@fluentui/react';
 
 import { MAIN_PATH } from 'routes/paths';
 import { LogInField } from 'common/model/inputs';
 import { useAppDispatch, useAppSelector } from 'store';
+import { logInUserWithEmail } from 'store/app/actions';
 
 import FloatingBox from 'common/components/FloatingBox';
 
 import styles from './Login.module.scss';
-import { logInUserWithEmail } from 'store/app/actions';
+import GoogleSignIn from 'common/components/GoogleSignIn';
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -52,42 +53,48 @@ const Login: FC = () => {
 
   return (
     <FloatingBox className={styles.Login}>
-      <h2 className={styles.title}>{`Register`}</h2>
+      <h2 className={styles.title}>{`Log In`}</h2>
       {isLoadingRequest ? (
-        <Spinner size={SpinnerSize.large} label="Creating user" />
+        <Spinner size={SpinnerSize.large} label="Log In" />
       ) : (
-        <form className={styles.userData}>
-          <TextField
-            label="Email"
-            type="email"
-            name={LogInField.EMAIL}
-            value={userMail}
-            onChange={updateUserInput}
-            required
+        <>
+          <form className={styles.userData}>
+            <TextField
+              label="Email"
+              type="email"
+              name={LogInField.EMAIL}
+              value={userMail}
+              onChange={updateUserInput}
+              required
+            />
+            <TextField
+              label="Password"
+              value={userPassword}
+              onChange={updateUserInput}
+              type="password"
+              name={LogInField.PASSWORD}
+              canRevealPassword
+              revealPasswordAriaLabel="Show password"
+              required
+            />
+          </form>
+          <PrimaryButton
+            text="Log In"
+            onClick={handleLogIn}
+            disabled={someFieldIsEmpty()}
+            className={styles.btn}
           />
-          <TextField
-            label="Password"
-            value={userPassword}
-            onChange={updateUserInput}
-            type="password"
-            name={LogInField.PASSWORD}
-            canRevealPassword
-            revealPasswordAriaLabel="Show password"
-            required
-          />
-        </form>
+        </>
       )}
-      <PrimaryButton
-        text="Log In"
-        onClick={handleLogIn}
-        disabled={someFieldIsEmpty()}
-        className={styles.btn}
-      />
+      <Separator />
       <p className={styles.message}>
         {`If you don't have an account, `}
         <br />
-        <a href="/register"> {`you can create one here.`}</a>
+        <a href="/register">{`you can create one here.`}</a>
+        <br />
+        {`or`}
       </p>
+      <GoogleSignIn />
     </FloatingBox>
   );
 };

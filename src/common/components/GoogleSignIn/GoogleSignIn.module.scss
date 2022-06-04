@@ -1,0 +1,16 @@
+$icon-size: 1.15rem;
+
+.GoogleSignIn {
+  min-height: 2rem;
+  min-width: 40vw;
+  justify-self: center;
+
+  .logo {
+    width: $icon-size;
+    height: $icon-size;
+    margin: 0 0.2rem;
+    background-size: cover;
+    background-position: center;
+    background-image: url('/common/assets/images/google.png');
+  }
+}
