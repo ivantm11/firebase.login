@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -46,6 +47,14 @@ class FirebaseService {
     try {
       const userLogged = await signInWithPopup(MyAuth, MyGoogleAuthProvider);
       return userLogged;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async sendResetPasswordEmail(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(MyAuth, email);
     } catch (error) {
       throw error;
     }

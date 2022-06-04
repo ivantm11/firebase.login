@@ -1,17 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PrimaryButton } from '@fluentui/react/lib/Button';
+import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
 import { Separator, Spinner, SpinnerSize, TextField } from '@fluentui/react';
 
 import { MAIN_PATH } from 'routes/paths';
 import { LogInField } from 'common/model/inputs';
 import { useAppDispatch, useAppSelector } from 'store';
-import { logInUserWithEmail } from 'store/app/actions';
+import { logInUserWithEmail, sendResetPasswordEmail } from 'store/app/actions';
 
 import FloatingBox from 'common/components/FloatingBox';
+import GoogleSignIn from 'common/components/GoogleSignIn';
 
 import styles from './Login.module.scss';
-import GoogleSignIn from 'common/components/GoogleSignIn';
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -24,9 +24,18 @@ const Login: FC = () => {
   const [userPassword, setUserPassword] = useState('');
 
   useEffect(() => {
+    return () => resetUserFields();
+  }, []);
+
+  useEffect(() => {
     if (isUserLoggedIn) navigate(MAIN_PATH);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
+
+  const resetUserFields = () => {
+    setUserMail('');
+    setUserPassword('');
+  };
 
   const updateUserInput = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -46,10 +55,56 @@ const Login: FC = () => {
     }
   };
 
+  const emailFieldIsEmpty = () => userMail === '';
+
   const someFieldIsEmpty = () => userMail === '' || userPassword === '';
 
-  const handleLogIn = () =>
+  const handleLogIn = () => {
     dispatch(logInUserWithEmail({ email: userMail, password: userPassword }));
+    resetUserFields();
+  };
+
+  const handleForgotPassword = () => {
+    dispatch(sendResetPasswordEmail(userMail));
+    resetUserFields();
+  };
+
+  const renderLoginForm = () => (
+    <>
+      <form className={styles.userData}>
+        <TextField
+          label="Email"
+          type="email"
+          name={LogInField.EMAIL}
+          value={userMail}
+          onChange={updateUserInput}
+          required
+        />
+        <TextField
+          label="Password"
+          value={userPassword}
+          onChange={updateUserInput}
+          type="password"
+          name={LogInField.PASSWORD}
+          canRevealPassword
+          revealPasswordAriaLabel="Show password"
+          required
+        />
+      </form>
+      <PrimaryButton
+        text="Log In"
+        onClick={handleLogIn}
+        disabled={someFieldIsEmpty()}
+        className={styles.btn}
+      />
+      <DefaultButton
+        text="Forgot password?"
+        onClick={handleForgotPassword}
+        disabled={emailFieldIsEmpty()}
+        className={styles.btn}
+      />
+    </>
+  );
 
   return (
     <FloatingBox className={styles.Login}>
@@ -57,38 +112,11 @@ const Login: FC = () => {
       {isLoadingRequest ? (
         <Spinner size={SpinnerSize.large} label="Log In" />
       ) : (
-        <>
-          <form className={styles.userData}>
-            <TextField
-              label="Email"
-              type="email"
-              name={LogInField.EMAIL}
-              value={userMail}
-              onChange={updateUserInput}
-              required
-            />
-            <TextField
-              label="Password"
-              value={userPassword}
-              onChange={updateUserInput}
-              type="password"
-              name={LogInField.PASSWORD}
-              canRevealPassword
-              revealPasswordAriaLabel="Show password"
-              required
-            />
-          </form>
-          <PrimaryButton
-            text="Log In"
-            onClick={handleLogIn}
-            disabled={someFieldIsEmpty()}
-            className={styles.btn}
-          />
-        </>
+        renderLoginForm()
       )}
       <Separator />
       <p className={styles.message}>
-        {`If you don't have an account, `}
+        {`If you don't have an account,`}
         <br />
         <a href="/register">{`you can create one here.`}</a>
         <br />

@@ -7,5 +7,6 @@ export const {
   createUserWithEmail,
   logInUserWithEmail,
   logInUserWithGoogle,
+  sendResetPasswordEmail,
   userSignOut
 } = SagaActions;
