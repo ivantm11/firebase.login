@@ -1,6 +1,9 @@
+@import 'common/scss/sizes.scss';
+@import 'common/scss/colors.scss';
+
 .Register {
-  max-width: 40vw;
-  background-color: rgb(90, 175, 255);
+  width: $floating-box-width;
+  background-color: $little-box-background;
   border: 0.1rem solid white;
   padding: 1rem 0.7rem;
   display: grid;
@@ -18,8 +21,8 @@
   }
 
   .btn {
+    width: 100%;
     min-height: 2rem;
-    min-width: 40vw;
     justify-self: center;
   }
 
@@ -30,5 +33,9 @@
     a {
       text-decoration: none;
     }
+  }
+
+  @media only screen and (max-width: $small-device-max-width) {
+    width: $floating-box-small-device-width;
   }
 }
