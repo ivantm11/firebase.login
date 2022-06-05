@@ -38,7 +38,7 @@ const Start: FC = () => {
 
   return (
     <div className={styles.Home}>
-      <code>Vi Fit</code>
+      <code>Firebase Login</code>
       {user.loggedIn ? renderUserLogged() : renderDefault()}
     </div>
   );
